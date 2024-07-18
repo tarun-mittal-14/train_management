@@ -1,0 +1,23 @@
+<h1 class="text-center mb-4">Train Detail</h1>
+
+<div class="container">
+  <div class="card">
+    <% if @train.image.attached? %>
+      <%= image_tag @train.image, class: 'card-img-top', alt: 'Train Image' %>
+    <% end %>
+    <div class="card-body">
+      <h5 class="card-title"><%= @train.name %></h5>
+      <p class="card-text"><strong>Source:</strong> <%= @train.source %></p>
+      <p class="card-text"><strong>Destination:</strong> <%= @train.destination %></p>
+      <p class="card-text"><strong>Route:</strong> <%= @train.route %></p>
+      <p class="card-text"><strong>Seats:</strong> <%= @train.seats %></p>
+    </div>
+    <div class="card-footer text-center">
+      <%= link_to 'Back', trains_path, class: 'btn btn-secondary' %>
+      <% if current_user&.admin? %>
+        <%= link_to 'Edit', edit_train_path(@train), class: 'btn btn-primary' %>
+        <%= link_to 'Destroy', train_path(@train), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <% end %>
+    </div>
+  </div>
+</div>

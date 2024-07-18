@@ -1,0 +1,54 @@
+<h1>Trains</h1>
+
+<% if user_signed_in? && current_user.admin? %>
+  <%= link_to 'New Train', new_train_path, class: 'btn btn-primary mb-3' %>
+<% end %>
+
+<%= form_with url: trains_path, method: :get, local: true do %>
+  <div class="form-group">
+    <%= label_tag :search, 'Search trains:' %>
+    <%= text_field_tag :search, params[:search], class: 'form-control mb-2' %>
+    <%= submit_tag 'Search', class: 'btn btn-secondary' %>
+  </div>
+<% end %>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Source</th>
+      <th>Destination</th>
+      <th>Route</th>
+      <th>Seats</th>
+      <% if user_signed_in? %>
+        <th>Actions</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @trains.each do |train| %>
+      <tr>
+        <td><%= train.name %></td>
+        <td><%= train.source %></td>
+        <td><%= train.destination %></td>
+        <td><%= train.route %></td>
+        <td><%= train.seats %></td>
+        <td>
+          <% if user_signed_in? %>
+            <%= link_to 'View', train_path(train), class: 'btn btn-info' %>
+             <%= link_to 'Booked', train_bookings_path(train), class: 'btn btn-info' %>
+            <% if current_user.admin? %>
+              <%= link_to 'Edit', edit_train_path(train), class: 'btn btn-warning' %>
+              <%= link_to 'Delete', train_path(train), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            <% else %>
+              <%= link_to 'Book', new_train_booking_path(train), class: 'btn btn-primary' %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @trains %>

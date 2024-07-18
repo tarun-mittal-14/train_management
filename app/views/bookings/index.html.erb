@@ -1,0 +1,28 @@
+<h1 class="text-center mb-4">My Bookings</h1>
+
+<% if @bookings.any? %>
+  <div class="booking-container">
+    <% @bookings.each do |booking| %>
+      <div class="booking-box">
+        <% if booking.train.image.attached? %>
+          <div class="booking-image">
+            <%= image_tag booking.train.image, alt: 'Train Image' %>
+          </div>
+        <% end %>
+        <div class="booking-details">
+          <h2 class="booking-title"><%= booking.train.name %></h2>
+          <p><strong>Source:</strong> <%= booking.train.source %></p>
+          <p><strong>Destination:</strong> <%= booking.train.destination %></p>
+          <p><strong>Seats:</strong> <%= booking.seats %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-center">No bookings found.</p>
+<% end %>
+
+<div class="text-center mt-4">
+  <%= link_to 'Back', trains_path, class: 'btn btn-secondary' %>
+  <!-- <%= link_to 'New Booking', new_train_booking_path, class: 'btn btn-primary' %> -->
+</div>

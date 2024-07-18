@@ -1,0 +1,48 @@
+<h1>New Train</h1>
+
+<%= form_with model: @train, local: true do |form| %>
+  <% if @train.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@train.errors.count, "error") %> prohibited this train from being saved:</h2>
+      <ul>
+        <% @train.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :source %>
+    <%= form.text_field :source, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :destination %>
+    <%= form.text_field :destination, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :route %>
+    <%= form.text_field :route, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :seats %>
+    <%= form.number_field :seats, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :image %>
+    <%= form.file_field :image, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Update Train', class: 'btn btn-primary' %>
+  </div>
+<% end %>
