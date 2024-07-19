@@ -16,7 +16,7 @@
       <%= link_to 'Back', trains_path, class: 'btn btn-secondary' %>
       <% if current_user&.admin? %>
         <%= link_to 'Edit', edit_train_path(@train), class: 'btn btn-primary' %>
-        <%= link_to 'Destroy', train_path(@train), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+        <%= button_to 'Destroy', train_path(@train), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
       <% end %>
     </div>
   </div>

@@ -1,5 +1,4 @@
 class Train < ApplicationRecord
-  # attr_accessible :source, :destination
   has_many :bookings, dependent: :destroy
   has_one_attached :image
 

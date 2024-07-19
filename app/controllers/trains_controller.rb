@@ -1,7 +1,6 @@
 class TrainsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_train, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_admin!, except: [:index, :show]
 
   def index
     if params[:search].present?
@@ -22,20 +21,31 @@ class TrainsController < ApplicationController
   end
 
   def create
-    t = Train.all
+    trains = Train.all
+    byebug
     @train = Train.new(train_params)
-    a = t.where(source: train_params[:source]).present? && (t.where(destination: train_params[:destination]).present?)
-    if a 
+    # check(train_params)
+    duplicate = trains.where(source: train_params[:source]).present? && (trains.where(destination: train_params[:destination]).present?)
+    if duplicate 
       redirect_to new_train_path
       flash[:notice] =  'Train with source and destination already exist' 
     else
       if @train.save
-        redirect_to @train, notice: 'Train was successfully created.'
+        redirect_to root_path
+        flash[:notice] = 'Train was successfully created.'
       else
         render :new
       end
     end
   end
+
+  # def check(train_params)
+  #   t = Train.all
+  #    a = t.where(source: train_params[:source]).present? && (t.where(destination: train_params[:destination]).present?)
+  #   if a 
+  #     redirect_to new_train_path and return flash[:notice] =  'Train with source and destination already exist'
+  #   end
+  # end
 
   def edit
   end
@@ -50,7 +60,8 @@ class TrainsController < ApplicationController
 
   def destroy
     @train.destroy
-    redirect_to root_path, notice: 'Train was successfully destroyed.'
+    redirect_to root_path
+     flash[:notice] = 'Train was successfully destroyed.'
   end
 
   private
@@ -61,9 +72,5 @@ class TrainsController < ApplicationController
 
   def train_params
     params.require(:train).permit(:name, :source, :destination, :route, :seats, :image)
-  end
-
-  def authorize_admin!
-    redirect_to root_path, alert: 'Access Denied' unless current_user.admin?
   end
 end
