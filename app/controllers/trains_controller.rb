@@ -8,9 +8,9 @@ class TrainsController < ApplicationController
       search_query = "%#{params[:search]}%"
       @trains = Train.where('name LIKE ? COLLATE NOCASE OR source LIKE ? COLLATE NOCASE OR destination LIKE ? COLLATE NOCASE OR route LIKE ? COLLATE NOCASE', 
                             search_query, search_query, search_query, search_query)
-                     .paginate(page: params[:page], per_page: 5)
+                     .paginate(page: params[:page], per_page: 2)
     else
-      @trains = Train.paginate(page: params[:page], per_page: 5)
+      @trains = Train.paginate(page: params[:page], per_page: 2)
     end
   end
 

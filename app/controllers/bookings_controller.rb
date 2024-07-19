@@ -25,7 +25,6 @@ class BookingsController < ApplicationController
       Booking.create!(user: current_user, train: @train, seats: seats_to_book)
       flash[:notice] = "#{seats_to_book} seats successfully booked on #{@train.name}."
     end
-    # redirect_to train_path(@train)
     redirect_to root_path
   end
 
