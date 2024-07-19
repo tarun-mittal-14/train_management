@@ -6,11 +6,11 @@ class TrainsController < ApplicationController
   def index
     if params[:search].present?
       search_query = "%#{params[:search]}%"
-      @trains = Train.where('name LIKE ? COLLATE NOCASE OR source LIKE ? COLLATE NOCASE OR destination LIKE ? COLLATE NOCASE OR route LIKE ? COLLATE NOCASE', 
-                            search_query, search_query, search_query, search_query)
-                     .paginate(page: params[:page], per_page: 2)
+      @trains = Train.where("name ILIKE :search_query OR source ILIKE :search_query OR destination ILIKE :search_query OR route ILIKE :search_query",
+                      search_query: "%#{search_query}%")
+              .paginate(page: params[:page], per_page: 4)
     else
-      @trains = Train.paginate(page: params[:page], per_page: 2)
+      @trains = Train.paginate(page: params[:page], per_page: 4)
     end
   end
 
@@ -22,11 +22,18 @@ class TrainsController < ApplicationController
   end
 
   def create
+    t = Train.all
     @train = Train.new(train_params)
-    if @train.save
-      redirect_to @train, notice: 'Train was successfully created.'
+    a = t.where(source: train_params[:source]).present? && (t.where(destination: train_params[:destination]).present?)
+    if a 
+      redirect_to new_train_path
+      flash[:notice] =  'Train with source and destination already exist' 
     else
-      render :new
+      if @train.save
+        redirect_to @train, notice: 'Train was successfully created.'
+      else
+        render :new
+      end
     end
   end
 
@@ -43,7 +50,7 @@ class TrainsController < ApplicationController
 
   def destroy
     @train.destroy
-    redirect_to trains_url, notice: 'Train was successfully destroyed.'
+    redirect_to root_path, notice: 'Train was successfully destroyed.'
   end
 
   private

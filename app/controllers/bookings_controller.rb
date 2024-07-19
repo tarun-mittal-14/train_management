@@ -15,17 +15,16 @@ class BookingsController < ApplicationController
   def create
     @train = Train.find(params[:train_id])
     seats_to_book = params[:booking][:seats].to_i
-    if seats_to_book <= 0
-      flash[:alert] = "Number of seats to book must be greater than zero."
-    elsif seats_to_book > @train.seats
+    if seats_to_book > @train.seats
       flash[:alert] = "You can only book up to #{@train.seats} seats."
+      redirect_to new_train_booking_path
     else
       @train.seats -= seats_to_book
       @train.save
       Booking.create!(user: current_user, train: @train, seats: seats_to_book)
       flash[:notice] = "#{seats_to_book} seats successfully booked on #{@train.name}."
-    end
     redirect_to root_path
+    end
   end
 
   private

@@ -4,6 +4,7 @@
   <%= link_to 'New Train', new_train_path, class: 'btn btn-primary mb-3' %>
 <% end %>
 
+
 <%= form_with url: trains_path, method: :get, local: true do %>
   <div class="form-group">
     <%= label_tag :search, 'Search trains:' %>
@@ -12,11 +13,14 @@
   </div>
 <% end %>
 
+<% if user_signed_in? && current_user.passenger? %>
+  <%= link_to 'My Bookings', train_bookings_path(1), class: 'btn btn-primary mb-3' %>
+<% end %>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Train Name</th>
       <th>Source</th>
       <th>Destination</th>
       <th>Route</th>
@@ -37,7 +41,7 @@
         <td>
           <% if user_signed_in? %>
             <%= link_to 'View', train_path(train), class: 'btn btn-info' %>
-             <%= link_to 'Booked', train_bookings_path(train), class: 'btn btn-info' %>
+
             <% if current_user.admin? %>
               <%= link_to 'Edit', edit_train_path(train), class: 'btn btn-warning' %>
               <%= link_to 'Delete', train_path(train), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
