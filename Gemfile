@@ -30,7 +30,6 @@ gem 'jquery-rails'
 gem "jbuilder"
 gem 'devise'
 gem 'will_paginate', '~> 3.3.0'
-gem 'will_paginate-bootstrap'
 gem 'image_processing', '~> 1.2'
 gem 'pg', '~> 1.2' 
 gem 'byebug'
